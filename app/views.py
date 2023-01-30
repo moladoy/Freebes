@@ -2,20 +2,20 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail
-from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from django.urls import reverse_lazy
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
+
 from django.views import generic
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, UpdateView, CreateView, DeleteView
 
 from app.form import ContactForm, LoginForm, RegisterForm
 from app.models import Product, User
-# from token import account_activation_token
+
 
 
 def index(request):
@@ -107,7 +107,10 @@ def register_view(request):
         if form.is_valid():
             form.save()
         return redirect('index')
-    return render(request, 'app/register.html', {'form':form})
+    context = {
+        'form': form
+    }
+    return render(request, 'app/register.html', context)
 
 
 
@@ -132,4 +135,31 @@ class Register(generic.CreateView):
 
 
 
+class UpdateBlogView(LoginRequiredMixin, UserPassesTestMixin,  UpdateView):
+    model = Product
+    fields = ('title', 'text', 'price',  'category', 'img', )
+    template_name = 'update.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.user == self.request.user
+
+
+class DeleteBlogView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Product
+    template_name = 'delete.html'
+    success_url = reverse_lazy('index')
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.user == self.request.user
+
+
+class CreateBlogView(LoginRequiredMixin, CreateView):
+    model = Product
+    template_name = 'create.html'
+    fields = ('title', 'text', 'price',  'category', 'img')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)

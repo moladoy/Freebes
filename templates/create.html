@@ -1,0 +1,18 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Create Product</h1>
+    <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn btn-primary ml-2">Create</button>
+    </form>
+</body>
+</html>
+{% endblock content %}

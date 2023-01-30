@@ -1,0 +1,19 @@
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Delete Post</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>"{{ product.title }}" ochirmoqchimisiz?</p>
+        <button class="btn btn-outline-primary" type="submit">O'chirish</button>
+        <button class="btn btn-outline-primary"><a href="{% url 'single-post' product.pk %}">Ortga qaytish</a></button>
+    </form>
+</body>
+</html>
+{% endblock content %}

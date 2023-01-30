@@ -3,7 +3,7 @@ from django.urls import path, include
 
 from app import views
 from app.views import index, about, contact_view, render, blog, login_view, single_post, logout_view, BlogSearchView, \
-    Register, register_view
+    Register, register_view, CreateBlogView, UpdateBlogView, DeleteBlogView
 
 urlpatterns = [
     path('', index, name='index'),
@@ -14,6 +14,9 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('logout/',logout_view,name='logout'),
     path('serch-blogs/',BlogSearchView.as_view(),name='search_blogs'),
-    path('register/',register_view,name='register')
+    path('register/',register_view,name='register'),
+    path('create/', CreateBlogView.as_view(), name='create'),
+    path('update/<int:pk>/', UpdateBlogView.as_view(), name='update'),
+    path('delete/<int:pk>/', DeleteBlogView.as_view(), name='delete'),
 ]
 # adasd

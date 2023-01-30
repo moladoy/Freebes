@@ -1,8 +1,9 @@
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser, UserManager
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import integer_validator
 from django.db import models
 from django.db.models import CASCADE
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -28,6 +29,12 @@ class Product(models.Model):
     text = models.TextField()
     category = models.ForeignKey('app.Category', on_delete=models.CASCADE)
     user = models.ForeignKey('app.User', on_delete=CASCADE)
+
+    def str(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('single-post', args=[str(self.pk)])
 
 
 
