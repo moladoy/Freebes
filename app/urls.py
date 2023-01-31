@@ -18,5 +18,7 @@ urlpatterns = [
     path('create/', CreateBlogView.as_view(), name='create'),
     path('update/<int:pk>/', UpdateBlogView.as_view(), name='update'),
     path('delete/<int:pk>/', DeleteBlogView.as_view(), name='delete'),
+    path('succes', contact_view , name='succes'),
+
 ]
 # adasd

@@ -1,26 +1,18 @@
-from django.conf import settings
-from django.contrib import messages
+from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.core.mail import send_mail
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
-
 # Create your views here.
 from django.urls import reverse_lazy
-
 from django.views import generic
 from django.views.generic import ListView, TemplateView, UpdateView, CreateView, DeleteView
-
 from app.form import ContactForm, LoginForm, RegisterForm
-from app.models import Product, User
-
+from app.models import Product, User, Contact
 
 
 def index(request):
     return render(request, 'app/index.html')
-
 
 
 def about(request):
@@ -28,17 +20,17 @@ def about(request):
 
 
 def contact_view(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-            email_subject = f'New contact {form.cleaned_data["email"]}: {form.cleaned_data["subject"]}'
-            email_message = form.cleaned_data['message']
-            send_mail(email_subject, email_message, settings.CONTACT_EMAIL, settings.ADMIN_EMAIL)
-            return render(request, 'app/succes.html')
-    form = ContactForm()
-    context = {'form': form}
-    return render(request, 'app/contact.html', context)
+    if request.method == "Post":
+        contact = Contact()
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        text = request.POST.get('text')
+        contact.name = name
+        contact.email = email
+        contact.text = text
+        contact.save()
+        return render(request, 'app/succes.html')
+    return render(request, 'app/contact.html')
 
 
 def single_post(request, product_id):
@@ -48,16 +40,15 @@ def single_post(request, product_id):
     }
     return render(request, 'app/single-post.html', context)
 
+
 def blog(request):
     products = Product.objects.order_by('-id')
+    # product = products.objects.all()
     context = {
-        'products':products
+        'products':products,
+        # 'items':product
     }
     return render(request, 'app/blog.html', context)
-
-
-
-
 
 
 def login_view(request):
@@ -84,22 +75,7 @@ class blogPage(ListView):
     queryset = Product.objects.all()
     context_object_name = 'products'
 
-#
-# def register_view(request):
-#     form = RegisterForm()
-#     if request.method == "POST":
-#         form = RegisterForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             send_email(form.data.get('email'), request, 'register')
-#             messages.add_message(
-#                 request,
-#                 level=messages.INFO,
-#                 message='Xabar yuborildi, emailingizni tekshiring'
-#             )
-#             return redirect('register')
-#     return render(request, 'app/register.html', {'form': form})
-#
+
 def register_view(request):
     form = RegisterForm()
     if request.method == "POST":
@@ -111,9 +87,6 @@ def register_view(request):
         'form': form
     }
     return render(request, 'app/register.html', context)
-
-
-
 
 
 class BlogSearchView(ListView):
@@ -132,7 +105,6 @@ class Register(generic.CreateView):
     from_class = UserCreationForm
     success_url = reverse_lazy('index')
     template_name = 'app/register.html'
-
 
 
 class UpdateBlogView(LoginRequiredMixin, UserPassesTestMixin,  UpdateView):
@@ -163,3 +135,17 @@ class CreateBlogView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class ShopPage(ListView):
+    template_name = 'app/blog.html'
+    model = Product
+    queryset = Product.objects.all()
+    context_object_name = 'products'
+    # paginate_by = 3
+
+    def get_queryset(self):
+        title = self.request.GET.get('title')
+        if title:
+            return Product.objects.filter(title__icontains=title)
+        return Product.objects.all()

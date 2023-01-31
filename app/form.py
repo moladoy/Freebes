@@ -67,20 +67,3 @@ class RegisterForm(forms.Form):
         user.save()
 
 
-# def send_email(email, request, _type):
-#
-#     user = User.objects.get(email=email)
-#     subject = 'Activate your account'
-#     current_site = get_current_site(request)
-#     message = render_to_string('app/auth/active_message.html', {
-#         'user': user,
-#         'domain': current_site.domain,
-#         'uid': urlsafe_base64_encode(force_bytes(str(user.pk))),
-#         'token': account_activation_token.make_token(user),
-#     })
-#
-#     from_email = EMAIL_HOST_USER
-#     recipient_list = [email]
-#
-#     send_mail(subject, message, from_email, recipient_list)
-#     print('Send to MAIL')

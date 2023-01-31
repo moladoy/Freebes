@@ -54,18 +54,11 @@
                 </figcaption>
               </figure>
 
-              <div class="share">
-                <a class="main-button" href=""><i class="fab fa-facebook-f"></i> FACEBOOK</a>
-                <a class="main-button" href=""> <i class="fab fa-google-plus-g"></i> GOOGLE+</a>
-                <a class="main-button" href=""><i class="fab fa-twitter"></i> TWITTER</a>
-                <a class="main-button" href=""><i class="fab fa-linkedin-in"></i> LINKEDIN</a>
-                <a class="main-button" href=""><i class="fab fa-pinterest-p"></i> PINTEREST</a>
+              <div>
+                    <a href="{% url 'update' product.pk %}" class="main-button">Update</a>
+                  <a href="{% url 'delete' product.pk %}" class="main-button">Delete</a>
               </div>
-              <div class="navigation">
-                <a class="prew"><i class="fas fa-chevron-left"></i> PREVIOUS</a>
-                <a class="next">NEXT <i class="fas fa-chevron-right"></i></a>
-              </div>
-              <div class="line"></div>
+
 
             </div>
             <div class="sidebar col-md-4">

@@ -45,30 +45,30 @@
                 <div class="line"></div>
                 <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nostrum sunt optio consequuntur ducimus odit. Deleniti optio saepe unde omnis. Sapiente aliquam repellendus error id veniam totam dolores recusandae non dolorum?</p>
                 <div class="line"></div>
-                <form action="" method="post">
+                <form  method="post">
                     {% csrf_token %}
                     <tr>
                         <th>
                              <label for="id_email">Email:</label>
                         </th>
                         <td>
-                            <input type="email" name="email" maxlength="254" required id="id_email">
+                            <input  name="email" maxlength="254" required id="id_email" type="{{ form.email }}">
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            <label for="id_subject">Subject:</label>
+                            <label for="id_subject">name</label>
                         </th>
                         <td>
-                            <input type="text" name="subject" maxlength="255" required id="id_subject">
+                            <input  name="name" maxlength="255" required id="id_subject" type="{{ form.username }}">
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            <label for="id_message">Message:</label>
+                            <label for="id_message">Text:</label>
                         </th>
                         <td>
-                            <textarea name="message" cols="40" rows="10" required id="id_message"></textarea>
+                            <textarea name="text" cols="40" rows="10" required id="id_message" type="{{ form.text }}"></textarea>
                         </td>
                     </tr>
                     <input type="submit" value="Submit">
