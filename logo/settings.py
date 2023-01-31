@@ -114,8 +114,7 @@ ADMIN_EMAILS = ['moladoy07@example.com', ]
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'qodiriyabdulla85@gmail.com'
-EMAIL_HOST_PASSWORD = 'inauiynnwdkvnjni'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
